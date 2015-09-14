@@ -515,6 +515,10 @@ aside#sidebar .repo-owner a {
   font-weight: bold;
 }
 
+aside#sidebar p.repo-owner {
+  margin-bottom: 0;
+}
+
 aside#sidebar ul {
   list-style-type: none;
   padding: 0;
