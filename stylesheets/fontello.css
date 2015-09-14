@@ -54,7 +54,7 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
  
-.icon-clipboard:before { content: '\e800'; } /* '' */
+.icon-clipboard:before { content: '\e800'; transform: rotate(-14deg); } /* '' */
 .icon-file:before { content: '\e801'; } /* '' */
 .icon-codepen:before { content: '\e802'; } /* '' */
 .icon-github:before { content: '\e803'; } /* '' */
