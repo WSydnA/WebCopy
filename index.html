@@ -38,25 +38,22 @@
 
 <p>WebCopy adds a constructor (called WebCopy) to the global scope. The constructor takes two arguments: <em>elementToCopy</em> (required) and <em>settings</em> (optional). Given a valid <em>elementToCopy</em>, WebCopy returns an HTML button element, complete with stateful content and event listeners.</p>
 
-<h4>
-<a id="valid-arguments" class="anchor" href="#valid-arguments" aria-hidden="true"><span class="octicon octicon-link"></span></a>Valid arguments</h4>
-
 <h5>
-<a id="elementtocopy" class="anchor" href="#elementtocopy" aria-hidden="true"><span class="octicon octicon-link"></span></a><em>elementToCopy</em>
+<a id="elementtocopy" class="anchor" href="#elementtocopy" aria-hidden="true"><span class="octicon octicon-link"></span></a>elementToCopy
 </h5>
 
 <p>Must be an HTML <code>&lt;input&gt;</code> or <code>&lt;textarea&gt;</code>, or an element with a <code>contentEditable</code> attribute set to <code>true</code>. In addition, the element must exist within the document body, and must be visible (eg, it must not have <code>display: none</code> set in its styles).
 You can use a CSS selector instead of the actual element. If you're using JQuery, you can use a JQuery object instead (but note that only the first matching element will be used).</p>
 
 <h5>
-<a id="settings" class="anchor" href="#settings" aria-hidden="true"><span class="octicon octicon-link"></span></a><em>settings</em>
+<a id="settings" class="anchor" href="#settings" aria-hidden="true"><span class="octicon octicon-link"></span></a>settings
 </h5>
 
 <p>A settings object. All values are optional.</p>
 
 <ul>
 <li>
-<code>focusData</code> True or false (defaults to false). Set this to true if you want WebCopy to highlight the data that has been copied, after the user clicks the copy button. By default the copied text won't be highlighted - the button will remain focussed insted.</li>
+<code>focusData</code> True or false (defaults to false). Set this to true if you want WebCopy to highlight the data that has been copied, after the user clicks the copy button. By default the copied text won't be highlighted - the button will remain focussed instead.</li>
 <li>
 <code>buttonContent</code> An object that can have up to three properties: <code>ready</code>, <code>done</code> and <code>error</code>. Each of these must be strings and will be used for the content inside the button in each of its three states. The defaults are "Copy", "Copied" and "Failed", but you can supply your own text or HTML values.</li>
 <li>
@@ -76,7 +73,7 @@ container.<span class="pl-c1">insertBefore</span>(copyButton, elementToCopy.<spa
 <h3>
 <a id="using-settings" class="anchor" href="#using-settings" aria-hidden="true"><span class="octicon octicon-link"></span></a>Using settings</h3>
 
-<p>To use settings, pass in an object as the second argument. THis example uses all available settings.</p>
+<p>To use settings, pass in an object as the second argument. This example uses all available settings.</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> copyButton <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">WebCopy</span>(<span class="pl-s"><span class="pl-pds">"</span>#example<span class="pl-pds">"</span></span>, {                 <span class="pl-c">// Get the element to copy (we're using a selector this time instead of passing in an element)</span>
   focusData<span class="pl-k">:</span> <span class="pl-c1">true</span>,                                         <span class="pl-c">// After the button is clicked, the copied text will be highlighted</span>
