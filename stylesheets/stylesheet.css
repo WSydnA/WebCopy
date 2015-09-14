@@ -551,7 +551,7 @@ header a.button {
   position: absolute;
   top: 0;
   right: 0;
-  background: #000 url(../images/github-button.png) 0 0 no-repeat;
+  background: #000 url(../images/github-button.png) 0 -1px no-repeat;
   border-radius: 10px;
   width: 134px;
   height: 56px;
