@@ -823,6 +823,9 @@ footer a:hover {
   header h2 {
     font-size: 24px;
   }
+  #main-content h2 {
+    text-indent: 0;
+  }
   header a.button {
     position: relative;
     display: inline-block;
