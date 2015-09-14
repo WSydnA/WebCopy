@@ -510,9 +510,19 @@ aside#sidebar {
   background: transparent url(../images/sidebar-bg.jpg) 0 0 no-repeat;
 }
 
-aside#sidebar p.repo-owner,
-aside#sidebar p.repo-owner a {
+aside#sidebar .repo-owner,
+aside#sidebar .repo-owner a {
   font-weight: bold;
+}
+
+aside#sidebar ul {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 0;
+}
+
+aside#sidebar ul li {
+  margin-top: 0.5em;
 }
 
 #downloads {
