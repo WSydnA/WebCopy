@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>WebCopy by AndyWhite87</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>WebCopy</h1>
+        <h2>WebCopy makes copying to the clipboard easy. Pure JavaScript, no dependencies, no need for Flash.</h2>
+        <a href="https://github.com/AndyWhite87/WebCopy" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="webcopy" class="anchor" href="#webcopy" aria-hidden="true"><span class="octicon octicon-link"></span></a>WebCopy</h1>
+
+<p>WebCopy makes copying to the clipboard easy. Pure JavaScript, no dependencies, no need for Flash.</p>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>WebCopy adds a constructor (called WebCopy) to the global scope. The constructor takes two arguments: <em>elementToCopy</em> (required) and <em>settings</em> (optional). Given a valid <em>elementToCopy</em>, WebCopy returns an HTML button element, complete with stateful content and event listeners.</p>
+
+<h4>
+<a id="valid-arguments" class="anchor" href="#valid-arguments" aria-hidden="true"><span class="octicon octicon-link"></span></a>Valid arguments</h4>
+
+<h5>
+<a id="elementtocopy" class="anchor" href="#elementtocopy" aria-hidden="true"><span class="octicon octicon-link"></span></a><em>elementToCopy</em>
+</h5>
+
+<p>Must be an HTML <code>&lt;input&gt;</code> or <code>&lt;textarea&gt;</code>, or an element with a <code>contentEditable</code> attribute set to <code>true</code>. In addition, the element must exist within the document body, and must be visible (eg, it must not have <code>display: none</code> set in its styles).
+You can use a CSS selector instead of the actual element. If you're using JQuery, you can use a JQuery object instead (but note that only the first matching element will be used).</p>
+
+<h5>
+<a id="settings" class="anchor" href="#settings" aria-hidden="true"><span class="octicon octicon-link"></span></a><em>settings</em>
+</h5>
+
+<p>A settings object. All values are optional.</p>
+
+<ul>
+<li>
+<code>focusData</code> True or false (defaults to false). Set this to true if you want WebCopy to highlight the data that has been copied, after the user clicks the copy button. By default the copied text won't be highlighted - the button will remain focussed insted.</li>
+<li>
+<code>buttonContent</code> An object that can have up to three properties: <code>ready</code>, <code>done</code> and <code>error</code>. Each of these must be strings and will be used for the content inside the button in each of its three states. The defaults are "Copy", "Copied" and "Failed", but you can supply your own text or HTML values.</li>
+<li>
+<code>buttonClasses</code> An object that can have up to three properties: <code>ready</code>, <code>done</code> and <code>error</code>. Each of these must be strings and will be used as CSS classes on the button in each of its three states. Classes should be separated with spaces.</li>
+</ul>
+
+<h3>
+<a id="basic-usage" class="anchor" href="#basic-usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>Basic usage</h3>
+
+<p>To generate a new copy button, call WebCopy and pass in a valid HTML element as the elementToCopy:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> elementToCopy <span class="pl-k">=</span> <span class="pl-c1">document</span>.querySelector(<span class="pl-s"><span class="pl-pds">"</span>#example<span class="pl-pds">"</span></span>);        <span class="pl-c">// Get the element to copy (eg an input)</span>
+<span class="pl-k">var</span> container <span class="pl-k">=</span> elementToCopy1.<span class="pl-c1">parentNode</span>;                     <span class="pl-c">// Get the element's container (so we know where to put the button)</span>
+<span class="pl-k">var</span> copyButton <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">WebCopy</span>(elementToCopy);                   <span class="pl-c">// Call WebCopy to generate a copy button</span>
+container.<span class="pl-c1">insertBefore</span>(copyButton, elementToCopy.<span class="pl-c1">nextSibling</span>); <span class="pl-c">// Insert the copy button directly after the element</span></pre></div>
+
+<h3>
+<a id="using-settings" class="anchor" href="#using-settings" aria-hidden="true"><span class="octicon octicon-link"></span></a>Using settings</h3>
+
+<p>To use settings, pass in an object as the second argument. THis example uses all available settings.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> copyButton <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">WebCopy</span>(<span class="pl-s"><span class="pl-pds">"</span>#example<span class="pl-pds">"</span></span>, {                 <span class="pl-c">// Get the element to copy (we're using a selector this time instead of passing in an element)</span>
+  focusData<span class="pl-k">:</span> <span class="pl-c1">true</span>,                                         <span class="pl-c">// After the button is clicked, the copied text will be highlighted</span>
+  buttonContent<span class="pl-k">:</span> {
+    ready<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>&lt;span class='icon-clipboard'&gt; Copy me&lt;/span&gt;<span class="pl-pds">"</span></span>, <span class="pl-c">// Will be parsed as HTML and inserted into the button</span>
+    done<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>&lt;span class='icon-check'&gt; I'm copied!&lt;/span&gt;<span class="pl-pds">"</span></span>   <span class="pl-c">// Will be parsed as HTML and inserted into the button after it has been clicked</span>
+  },
+  buttonClasses<span class="pl-k">:</span> {
+    ready<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>button pink bold square<span class="pl-pds">"</span></span>,                      <span class="pl-c">// These classes will be added to the button in its unclicked state        </span>
+    done<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>button green italic square<span class="pl-pds">"</span></span>,                    <span class="pl-c">// These classes will be added to the button after it is clicked, if the copy was successful</span>
+    error<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>button square<span class="pl-pds">"</span></span>                                 <span class="pl-c">// These classes will be added to the button after it is clicked, if the copy was *not* successful</span>
+  }
+});
+<span class="pl-k">var</span> elementToCopy <span class="pl-k">=</span> <span class="pl-c1">document</span>.querySelector(<span class="pl-s"><span class="pl-pds">"</span>#example<span class="pl-pds">"</span></span>);    <span class="pl-c">// Get the element to copy</span>
+<span class="pl-k">var</span> container <span class="pl-k">=</span> elementToCopy2.<span class="pl-c1">parentNode</span>;                 <span class="pl-c">// Get the element's container</span>
+container.<span class="pl-c1">insertBefore</span>(copyButton2, elementToCopy2);       <span class="pl-c">// Insert the copy button directly before the element</span></pre></div>
+
+<h3>
+<a id="jquery-usage" class="anchor" href="#jquery-usage" aria-hidden="true"><span class="octicon octicon-link"></span></a>JQuery usage</h3>
+
+<p>WebCopy isn't a JQuery plugin and doesn't create any JQuery code, but it understands JQuery objects.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> $elementToCopy <span class="pl-k">=</span> $(<span class="pl-s"><span class="pl-pds">"</span>#example<span class="pl-pds">"</span></span>);                <span class="pl-c">// Get the element to copy</span>
+<span class="pl-k">var</span> $copyButton <span class="pl-k">=</span> <span class="pl-k">new</span> $(WebCopy($elementToCopy, {  <span class="pl-c">// Call WebCopy, passing in the element to copy</span>
+  buttonClasses<span class="pl-k">:</span> {                                 <span class="pl-c">// Supply any settings you like</span>
+    ready<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>button<span class="pl-pds">"</span></span>,
+    done<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>button button-success<span class="pl-pds">"</span></span>,
+    error<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>button button-error<span class="pl-pds">"</span></span>
+  }
+}));
+$elementToCopy.after($copyButton);                 <span class="pl-c">// Insert the button into your page</span></pre></div>
+
+<h2>
+<a id="supported-browsers" class="anchor" href="#supported-browsers" aria-hidden="true"><span class="octicon octicon-link"></span></a>Supported browsers</h2>
+
+<ul>
+<li>Chrome 42+</li>
+<li>Firefox 41+</li>
+<li>Opera 29+</li>
+<li>IE 9+</li>
+<li>Edge</li>
+</ul>
+
+<p>Not currently supported in Safari (including Chrome for iOS) or Opera Mini. The code will still 'work' in these unsupported browsers (ie, it won't cause your scripts to crash) but an invisible span will be returned instead of a copy button. This means you don't need to adapt your code to account for unsupported browsers.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/AndyWhite87/WebCopy/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/AndyWhite87/WebCopy/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/AndyWhite87/WebCopy"></a> is maintained by <a href="https://github.com/AndyWhite87">AndyWhite87</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
