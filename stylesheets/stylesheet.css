@@ -813,7 +813,7 @@ footer a:hover {
   #main-content {
     width: 490px;
   }
-  #main-content h1:before,
+  #main-content h1:not([class*="icon-"]):before,
   #main-content h2:before,
   #main-content h3:before,
   #main-content h4:before,
@@ -822,6 +822,13 @@ footer a:hover {
     padding-right: 0;
     margin-left: 0;
     content: none;
+  }
+  #main-content h1[class*="icon-"]:before {
+    position: relative;
+    font-size: 0.75em;
+    top: -0.15em;
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 
@@ -894,13 +901,6 @@ footer a:hover {
     padding-right: 0;
     margin-left: 0;
     content: none;
-  }
-  #main-content h1[class*="icon-"]:before {
-    position: relative;
-    font-size: 0.75em;
-    top: -0.15em;
-    margin-left: 0;
-    margin-right: 0;
   }
 }
 
