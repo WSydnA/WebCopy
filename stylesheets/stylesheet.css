@@ -451,14 +451,28 @@ a:hover {
 }
 
 header {
+  position: relative;
+  overflow: hidden;
   padding-top: 40px;
   padding-bottom: 40px;
   font-family: 'Roboto', Helvetica, Arial, serif;
-  background: #2e7bcf url(../images/header-bg.jpg) 0 0 repeat-x;
   border-bottom: solid 1px #275da1;
 }
 header:before {
-
+  content: " ";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  z-index: -1;
+  background: #2e7bcf url(../images/header-bg.jpg) 0 -20px repeat-x;
+  -webkit-transform: rotate(-4deg);
+  -moz-transform: rotate(-4deg);
+  -ms-transform: rotate(-4deg);
+  -o-transform: rotate(-4deg);
+  transform: rotate(-4deg);
+}
 header h1 {
   width: 540px;
   margin: 0.5em 0 0.75em 0;
