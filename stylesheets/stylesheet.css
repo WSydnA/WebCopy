@@ -892,7 +892,7 @@ footer a:hover {
   aside#sidebar a.button {
     display: none;
   }
-  #main-content h1:not([class*="icon-"]):before,
+  #main-content h1:before,
   #main-content h2:before,
   #main-content h3:before,
   #main-content h4:before,
