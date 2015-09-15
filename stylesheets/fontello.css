@@ -19,7 +19,7 @@
 }
 */
  
- [class^="icon-"]:before, [class*=" icon-"]:before {
+ [class*="icon-"]:before, [class*=" icon-"]:before {
   font-family: "fontello";
   font-style: normal;
   font-weight: normal;
@@ -52,6 +52,10 @@
  
   /* Uncomment for 3D effect */
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+a[class*="icon-"]:before {
+    padding-right: 0.5em;
 }
  
 .icon-clipboard:before { content: '\e800'; transform: rotate(-14deg); } /* '' */
