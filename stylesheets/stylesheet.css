@@ -460,8 +460,7 @@ header {
 
 header h1 {
   width: 540px;
-  margin-top: 0;
-  margin-bottom: 0.2em;
+  margin: 0.5em 0 0.75em 0;
   font-size: 72px;
   font-weight: normal;
   line-height: 1;
@@ -476,7 +475,7 @@ header h1[class*="icon-"]:before {
 header h2 {
   width: 540px;
   margin-top: 0;
-  margin-bottom: 0;
+  margin-bottom: 0.25em;
   font-size: 26px;
   font-weight: normal;
   line-height: 1.3;
@@ -802,9 +801,14 @@ footer a:hover {
   }
   header h1 {
     font-size: 60px;
+    margin: 0.75em 0 1em 0;
   }
   header h2 {
     font-size: 30px;
+    margin-bottom: 1.1em;
+  }
+  header a.button {
+    margin-bottom: 15px;
   }
   #main-content {
     width: 490px;
