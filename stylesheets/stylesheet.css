@@ -888,6 +888,8 @@ footer a:hover {
     position: relative;
     font-size: 0.75em;
     top: -0.15em;
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 
