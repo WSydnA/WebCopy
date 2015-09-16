@@ -1,19 +1,11 @@
 /*! WebCopy.0.4.0.js | http://andywhite87.github.io/WebCopy/ | MIT
 *   Andy White | https://twitter.com/etihWydnA
 *   Built on 16-09-2015 */
-;(function() { "use strict";
-/**
-* @constructor - Returns a new "Copy to clipboard" button for insertion into the DOM.
-*
-* @param {element} elementToCopy - the element to copy data content from when the button is clicked.
-* @param {object} [settings] - optional settings. Supported properties are:
-* @param {boolean} [settings.focusData] - whether to highlight data after it has been copied. Defaults to false.
-* @param {object} [settings.buttonContent] - content to use for the button in its ready, done and error states.
-* @param {object} [settings.buttonClasses] - CSS classes to be applied to the button in its ready, done and error states.
-*
-* @returns {element} the copy button, along with event handlers, for insertion into the DOM.
-*/  
-    
+
+;(function() {
+
+"use strict";
+
   // In IE8 or lower, or similarly old browsers, bail out and return a dummy span to any WebCopy calls
   if (typeof window.addEventListener === "undefined") {
     window.WebCopy = function() {        
@@ -25,7 +17,104 @@
     window.WebCopy.isSupported = false;
     return false;
   }
-  
+
+  var addClasses = function(element, classes) {
+
+    var classArray = classes.split(" ");
+    for (var c = 0; c < classArray.length; c++) {
+      element.className += " " + classArray[c];
+    }
+
+    return element;
+  };
+
+  var removeClasses = function(element, classes) {
+
+    var classArray = classes.split(" ");
+    for (var c = 0; c < classArray.length; c++) {
+      element.className = element.className.split(classArray[c]).join("");
+    }
+
+    return element;
+  };
+
+  var useCustomContent = function(content, customContent) {
+
+    var propsToCheck = ["ready", "done", "error"];
+
+    for (var p = 0; p < propsToCheck.length; p++) {
+
+      var prop = propsToCheck[p];
+
+      if (customContent[prop] !== null && typeof customContent[prop] === "string" && customContent[prop].length > 0) {
+        content[prop] = customContent[prop];
+      }
+    }
+
+    return content;
+  };
+
+  var useCustomClasses = function(classes, customClasses) {
+
+    var propsToCheck = ["ready", "done", "error"];
+
+    for (var p = 0; p < propsToCheck.length; p++) {
+
+      var prop = propsToCheck[p];
+
+      if (customClasses[prop] !== null && typeof customClasses[prop] === "string" && customClasses[prop].length > 0) {
+        classes[prop] += " " + customClasses[prop];
+      }
+    }
+
+    return classes;
+  };
+
+  var elementIsValid = function(element) {
+
+    if (typeof element === "undefined" || element === null) {
+      return false;
+    }
+
+    var elementIsInBody = (element === document.body) ? false : document.body.contains(element);
+
+    var tagName = element.tagName.toUpperCase();
+    var contentEditable = element.getAttribute("contentEditable");
+    var elementIsAllowed = (tagName === "INPUT" || tagName === "TEXTAREA" || contentEditable) ? true : false;
+
+    return (elementIsInBody && elementIsAllowed) ? true : false;
+  };
+
+  var getContentString = function(content) {
+
+    var ready = "<span class='webCopy-ready-content'>" + content.ready + "</span>";
+    var done = "<span class='webCopy-done-content'>" + content.done + "</span>";
+    var error = "<span class='webCopy-error-content'>" + content.error + "</span>";
+
+    return ready + done + error;
+  };
+
+  var insertStyles = function(isSupported) {
+
+    var styles;
+    
+    if (isSupported) {
+      styles = ".webCopy .webCopy-done-content,.webCopy .webCopy-error-content {display:none;}" +
+      ".webCopy.webCopy-done .webCopy-ready-content,.webCopy.webCopy-error .webCopy-ready-content {display:none;}" +
+      ".webCopy.webCopy-done .webCopy-done-content {display: inline;}" +
+      ".webCopy.webCopy-error .webCopy-error-content {display: inline;}" +
+      ".webCopy-element-invalid {display: none;}";
+    }
+    else {
+      styles = ".webCopy-not-supported {display: none;}";
+    }
+
+    var styleTag = document.createElement("style");
+    styleTag.setAttribute("class", "webCopy-styles");
+    styleTag.appendChild(document.createTextNode(styles));
+    document.querySelector("head").appendChild(styleTag);
+  };
+
   var isSupported = function() {
 
     // Support isn't reported correctly on Safari, so UA sniffing is used to discount Safari on desktop or iDevices
@@ -52,27 +141,6 @@
     return false;
   };
 
-  var insertStyles = function(isSupported) {
-
-    var styles;
-    
-    if (isSupported) {
-      styles = ".webCopy .webCopy-done-content,.webCopy .webCopy-error-content {display:none;}" +
-      ".webCopy.webCopy-done .webCopy-ready-content,.webCopy.webCopy-error .webCopy-ready-content {display:none;}" +
-      ".webCopy.webCopy-done .webCopy-done-content {display: inline;}" +
-      ".webCopy.webCopy-error .webCopy-error-content {display: inline;}" +
-      ".webCopy-element-invalid {display: none;}";
-    }
-    else {
-      styles = ".webCopy-not-supported {display: none;}";
-    }
-
-    var styleTag = document.createElement("style");
-    styleTag.setAttribute("class", "webCopy-styles");
-    styleTag.appendChild(document.createTextNode(styles));
-    document.querySelector("head").appendChild(styleTag);
-  };
-
   var sanitizedElement = function(element) {
 
     // If a string has been passed in as the element, treat it as a selector
@@ -88,28 +156,19 @@
     return element;
   };
 
-  var addClasses = function(element, classes) {
-
-    var classArray = classes.split(" ");
-    for (var c = 0; c < classArray.length; c++) {
-      element.className += " " + classArray[c];
-    }
-
-    return element;
-  };
-
-  var removeClasses = function(element, classes) {
-
-    var classArray = classes.split(" ");
-    for (var c = 0; c < classArray.length; c++) {
-      element.className = element.className.split(classArray[c]).join("");
-    }
-
-    return element;
-  };
-
+  /**
+  * @constructor - Returns a new "Copy to clipboard" button for insertion into the DOM.
+  *
+  * @param {element} elementToCopy - the element to copy data content from when the button is clicked.
+  * @param {object} [settings] - optional settings. Supported properties are:
+  * @param {boolean} [settings.focusData] - whether to highlight data after it has been copied. Defaults to false.
+  * @param {object} [settings.buttonContent] - content to use for the button in its ready, done and error states.
+  * @param {object} [settings.buttonClasses] - CSS classes to be applied to the button in its ready, done and error states.
+  *
+  * @returns {element} the copy button, along with event handlers, for insertion into the DOM.
+  */ 
   var WebCopy = function(elementToCopy, settings) {
-    
+  
     var defaultSettings =  {
       focusData: false,
       buttonContent: {},
@@ -127,63 +186,7 @@
       done: "webCopy webCopy-done",
       error: "webCopy webCopy-error"
     };
-
-    var useCustomContent = function(content, customContent) {
-
-      var propsToCheck = ["ready", "done", "error"];
-
-      for (var p = 0; p < propsToCheck.length; p++) {
-
-        var prop = propsToCheck[p];
-
-        if (customContent[prop] !== null && typeof customContent[prop] === "string" && customContent[prop].length > 0) {
-          content[prop] = customContent[prop];
-        }
-      }
-
-      return content;
-    };
-
-    var useCustomClasses = function(classes, customClasses) {
-
-      var propsToCheck = ["ready", "done", "error"];
-
-      for (var p = 0; p < propsToCheck.length; p++) {
-
-        var prop = propsToCheck[p];
-
-        if (customClasses[prop] !== null && typeof customClasses[prop] === "string" && customClasses[prop].length > 0) {
-          classes[prop] += " " + customClasses[prop];
-        }
-      }
-
-      return classes;
-    };
-
-    var getContentString = function(content) {
-
-      var ready = "<span class='webCopy-ready-content'>" + content.ready + "</span>";
-      var done = "<span class='webCopy-done-content'>" + content.done + "</span>";
-      var error = "<span class='webCopy-error-content'>" + content.error + "</span>";
-
-      return ready + done + error;
-    };
-
-    var elementIsValid = function(element) {
-
-      if (typeof element === "undefined" || element === null) {
-        return false;
-      }
-
-      var elementIsInBody = (element === document.body) ? false : document.body.contains(element);
-
-      var tagName = element.tagName.toUpperCase();
-      var contentEditable = element.getAttribute("contentEditable");
-      var elementIsAllowed = (tagName === "INPUT" || tagName === "TEXTAREA" || contentEditable) ? true : false;
-
-      return (elementIsInBody && elementIsAllowed) ? true : false;
-    };
-
+    
     // Return a dummy element if not supported in the current browser
     if (!isSupported()) {
       var notSupportedEl = document.createElement("span");
@@ -283,4 +286,5 @@
 
   // Attach the WebCopy constructor to the window object to allow it to be called
   window.WebCopy = WebCopy;
+
 })();

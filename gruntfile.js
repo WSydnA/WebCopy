@@ -3,23 +3,30 @@ module.exports = function(grunt) {
   grunt.initConfig({
 
     pkg: grunt.file.readJSON('package.json'),
+
     filename: '<%= pkg.name %>.<%= pkg.version %>',
+
+    banner: '/*! <%= filename %>.js | <%= pkg.url %> | <%= pkg.license %>\n' +
+            '*   <%= pkg.author %> | <%= pkg.contact %>\n' +
+            '*   Built on <%= grunt.template.today("dd-mm-yyyy") %> */\n',
+
+    s: 'src/',
 
     concat: {
       options: {
-        separator: ';',
-        banner: '/*! <%= filename %>.js | <%= pkg.url %> | <%= pkg.license %>\n*   <%= pkg.author %> | <%= pkg.contact %>\n*   Built on <%= grunt.template.today("dd-mm-yyyy") %> */\n;(function() { "use strict";',
-        footer: '})();'
+        banner: '<%= banner %>' +
+                '\n;(function() {\n\n"use strict";\n\n',
+        footer: '\n})();\n'
       },
       dist: {
-        src: ['src/**/*.js'],
+        src: ['<%=s%>_mustard-cut.js', "<%=s%>lib/*.js", '<%= s %>_jsdoc.js', '<%=s%>main.js', '<%=s%>_footer.js'],
         dest: 'dist/<%= filename %>.js'
       }
     },
 
     uglify: {
       options: {
-        banner: '<%= concat.options.banner %>'
+        banner: '<%= banner %>'
       },
       dist: {
         files: {
