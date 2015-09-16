@@ -105,8 +105,64 @@
     return element;
   };
 
+  var useCustomContent = function(content, customContent) {
+
+    var propsToCheck = ["ready", "done", "error"];
+
+    for (var p = 0; p < propsToCheck.length; p++) {
+
+      var prop = propsToCheck[p];
+
+      if (customContent[prop] !== null && typeof customContent[prop] === "string" && customContent[prop].length > 0) {
+        content[prop] = customContent[prop];
+      }
+    }
+
+    return content;
+  };
+
+  var useCustomClasses = function(classes, customClasses) {
+
+    var propsToCheck = ["ready", "done", "error"];
+
+    for (var p = 0; p < propsToCheck.length; p++) {
+
+      var prop = propsToCheck[p];
+
+      if (customClasses[prop] !== null && typeof customClasses[prop] === "string" && customClasses[prop].length > 0) {
+        classes[prop] += " " + customClasses[prop];
+      }
+    }
+
+    return classes;
+  };
+
+  var getContentString = function(content) {
+
+    var ready = "<span class='webCopy-ready-content'>" + content.ready + "</span>";
+    var done = "<span class='webCopy-done-content'>" + content.done + "</span>";
+    var error = "<span class='webCopy-error-content'>" + content.error + "</span>";
+
+    return ready + done + error;
+  };
+
+  var elementIsValid = function(element) {
+
+    if (typeof element === "undefined" || element === null) {
+      return false;
+    }
+
+    var elementIsInBody = (element === document.body) ? false : document.body.contains(element);
+
+    var tagName = element.tagName.toUpperCase();
+    var contentEditable = element.getAttribute("contentEditable");
+    var elementIsAllowed = (tagName === "INPUT" || tagName === "TEXTAREA" || contentEditable) ? true : false;
+
+    return (elementIsInBody && elementIsAllowed) ? true : false;
+  };
+
   var WebCopy = function(elementToCopy, settings) {
-    
+  
     var defaultSettings =  {
       focusData: false,
       buttonContent: {},
@@ -124,63 +180,7 @@
       done: "webCopy webCopy-done",
       error: "webCopy webCopy-error"
     };
-
-    var useCustomContent = function(content, customContent) {
-
-      var propsToCheck = ["ready", "done", "error"];
-
-      for (var p = 0; p < propsToCheck.length; p++) {
-
-        var prop = propsToCheck[p];
-
-        if (customContent[prop] !== null && typeof customContent[prop] === "string" && customContent[prop].length > 0) {
-          content[prop] = customContent[prop];
-        }
-      }
-
-      return content;
-    };
-
-    var useCustomClasses = function(classes, customClasses) {
-
-      var propsToCheck = ["ready", "done", "error"];
-
-      for (var p = 0; p < propsToCheck.length; p++) {
-
-        var prop = propsToCheck[p];
-
-        if (customClasses[prop] !== null && typeof customClasses[prop] === "string" && customClasses[prop].length > 0) {
-          classes[prop] += " " + customClasses[prop];
-        }
-      }
-
-      return classes;
-    };
-
-    var getContentString = function(content) {
-
-      var ready = "<span class='webCopy-ready-content'>" + content.ready + "</span>";
-      var done = "<span class='webCopy-done-content'>" + content.done + "</span>";
-      var error = "<span class='webCopy-error-content'>" + content.error + "</span>";
-
-      return ready + done + error;
-    };
-
-    var elementIsValid = function(element) {
-
-      if (typeof element === "undefined" || element === null) {
-        return false;
-      }
-
-      var elementIsInBody = (element === document.body) ? false : document.body.contains(element);
-
-      var tagName = element.tagName.toUpperCase();
-      var contentEditable = element.getAttribute("contentEditable");
-      var elementIsAllowed = (tagName === "INPUT" || tagName === "TEXTAREA" || contentEditable) ? true : false;
-
-      return (elementIsInBody && elementIsAllowed) ? true : false;
-    };
-
+    
     // Return a dummy element if not supported in the current browser
     if (!isSupported()) {
       var notSupportedEl = document.createElement("span");
