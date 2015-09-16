@@ -11,6 +11,7 @@ module.exports = function(grunt) {
             '*   Built on <%= grunt.template.today("dd-mm-yyyy") %> */\n',
 
     s: 'src/',
+    t: 'test/',
 
     concat: {
       options: {
@@ -19,7 +20,8 @@ module.exports = function(grunt) {
         footer: '\n})();\n'
       },
       dist: {
-        src: ['<%=s%>_mustard-cut.js', "<%=s%>lib/*.js", '<%= s %>_jsdoc.js', '<%=s%>main.js', '<%=s%>_footer.js'],
+        src: ['<%=s%>lib/_cuts-the-mustard.js', '<%=s%>_mustard-cut.js', '<%=s%>lib/*.js',
+              '<%= s %>_jsdoc.js', '<%=s%>main.js', '<%=s%>_footer.js'],
         dest: 'dist/<%= filename %>.js'
       }
     },
@@ -35,13 +37,15 @@ module.exports = function(grunt) {
       }
     },
 
-    /* TODO Configure Jasmine
     jasmine: {
-
-    }, */
+      src: ['<%=s%>lib/*.js', '<%=s%>main.js'],
+      options: {
+        specs: '<%=t%>lib/*.js'
+      }
+    },
 
     jshint: {
-      files: ['gruntfile.js', 'src/**/*.js', 'test/**/*.js'],
+      files: ['gruntfile.js', '<%=s%>**/*.js', '<%=t%>**/*.js'],
       options: {
         browser: true,
         globals: {
@@ -52,18 +56,18 @@ module.exports = function(grunt) {
 
     watch: {
       files: ['<%= jshint.files %>'],
-      tasks: ['jshint', 'concat', 'uglify'] // TODO add Jasmine
+      tasks: ['jshint', 'concat', 'uglify', 'jasmine']
     }
 
   });
 
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  //grunt.loadNpmTasks('grunt-contrib-jasmine');
+  grunt.loadNpmTasks('grunt-contrib-jasmine');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('test', ['jshint']); // TODO add Jasmine
-  grunt.registerTask('default', ['jshint', 'concat', 'uglify']); // TODO add Jasmine
+  grunt.registerTask('test', ['jshint', 'jasmine']);
+  grunt.registerTask('default', ['jshint', 'jasmine', 'concat', 'uglify']);
 
 };
