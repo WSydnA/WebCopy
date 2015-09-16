@@ -1,10 +1,5 @@
-/*global WebCopy */
 
 /**
-* WebCopy
-* @author Andy White [https://twitter.com/etihWydnA]
-* @license MIT
-*
 * @constructor - Returns a new "Copy to clipboard" button for insertion into the DOM.
 *
 * @param {element} elementToCopy - the element to copy data content from when the button is clicked.
@@ -14,10 +9,7 @@
 * @param {object} [settings.buttonClasses] - CSS classes to be applied to the button in its ready, done and error states.
 *
 * @returns {element} the copy button, along with event handlers, for insertion into the DOM.
-*/
-;(function() {
-
-  "use strict";
+*/  
     
   // In IE8 or lower, or similarly old browsers, bail out and return a dummy span to any WebCopy calls
   if (typeof window.addEventListener === "undefined") {
@@ -288,5 +280,3 @@
 
   // Attach the WebCopy constructor to the window object to allow it to be called
   window.WebCopy = WebCopy;
-
-})();
