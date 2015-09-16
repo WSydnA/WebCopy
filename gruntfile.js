@@ -20,7 +20,7 @@ module.exports = function(grunt) {
         footer: '\n})();\n'
       },
       dist: {
-        src: ['<%=s%>lib/_cuts-the-mustard.js', '<%=s%>_mustard-cut.js', '<%=s%>lib/*.js',
+        src: ['<%=s%>lib/cuts-the-mustard.js', '<%=s%>_mustard-cut.js', '<%=s%>lib/*.js',
               '<%= s %>_jsdoc.js', '<%=s%>main.js', '<%=s%>_footer.js'],
         dest: 'dist/<%= filename %>.js'
       }
