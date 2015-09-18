@@ -1,21 +1,44 @@
-  var addClasses = function(element, classes) {
+  var ClassModifier = function() {
 
-    var classArray = classes.split(" ");
-    for (var c = 0; c < classArray.length; c++) {
-      element.className += " " + classArray[c];
-    }
+    this.add = function(element, classes) {
 
-    element.className = element.className.replace(/^\s+|\s+$/g, "").replace(/\s\s+/g, " ");
-    return element;
-  };
+      element = modifyClassList(element, classes, modificationTypes.add);
+      return element;
 
-  var removeClasses = function(element, classes) {
+    };
 
-    var classArray = classes.split(" ");
-    for (var c = 0; c < classArray.length; c++) {
-      element.className = element.className.split(classArray[c]).join("");
-    }
+    this.remove = function(element, classes) {
 
-    element.className = element.className.replace(/^\s+|\s+$/g, "").replace(/\s\s+/g, " ");
-    return element;
+      element = modifyClassList(element, classes, modificationTypes.remove);
+      return element;
+
+    };
+
+    var modificationTypes = {
+      add: "add",
+      remove: "remove"
+    };
+
+    var modifyClassList = function(element, classes, modificationType) {
+
+      var classArray = classes.split(" ");
+
+      for (var c = 0; c < classArray.length; c++) {
+
+        var cls = classArray[c];
+
+        if (modificationType === modificationTypes.add) {
+          element.className += " " + cls;
+        }
+        else if (modificationType === modificationTypes.remove) {
+          element.className = element.className.split(cls).join("");
+        }
+
+      }
+
+      element.className = element.className.trim().replace(/\s\s+/g, " ");
+      return element;
+
+    };
+
   };

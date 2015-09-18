@@ -19,6 +19,8 @@
 
     var defaults = new Defaults();
 
+    var modifyClasses = new ClassModifier();
+
     // Set settings to default values if no/invalid settings object has been supplied
     if (typeof settings === "undefined" || settings === null || settings === {} || typeof settings.length !== "undefined")     {
       settings = defaults.settings;
@@ -42,7 +44,7 @@
     // Create the button
     var button = document.createElement("button");
     button.setAttribute("type", "button");
-    button = addClasses(button, buttonClasses.ready);
+    button = modifyClasses.add(button, buttonClasses.ready);
     button.innerHTML = buttonHtml;
 
     // Attach a click handler to the button to copy the text and mark as copied
@@ -66,8 +68,8 @@
 
       // Set the button's classes appropriately (based on whether the copy worked)
       var classesToAdd = success ? buttonClasses.done : buttonClasses.error;
-      button = removeClasses(button, buttonClasses.ready);
-      button = addClasses(button, classesToAdd);
+      button = modifyClasses.remove(button, buttonClasses.ready);
+      button = modifyClasses.add(button, classesToAdd);
 
       // If the focusData setting is off, deselect the data and focus the button after copying
       if (!settings.focusData) {
@@ -83,9 +85,9 @@
 
     // Attach a change listener to the elementToCopy to reset the button content if copied content changes
     elementToCopy.addEventListener("input", function() {
-      button = removeClasses(button, buttonClasses.done);
-      button = removeClasses(button, buttonClasses.error);
-      button = addClasses(button, buttonClasses.ready);
+      button = modifyClasses.remove(button, buttonClasses.done);
+      button = modifyClasses.remove(button, buttonClasses.error);
+      button = modifyClasses.add(button, buttonClasses.ready);
     });
 
     // Return the completed button, event listeners and all

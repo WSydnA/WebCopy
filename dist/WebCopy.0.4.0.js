@@ -52,26 +52,49 @@
 
   };
 
-  var addClasses = function(element, classes) {
+  var ClassModifier = function() {
 
-    var classArray = classes.split(" ");
-    for (var c = 0; c < classArray.length; c++) {
-      element.className += " " + classArray[c];
-    }
+    this.add = function(element, classes) {
 
-    element.className = element.className.replace(/^\s+|\s+$/g, "").replace(/\s\s+/g, " ");
-    return element;
-  };
+      element = modifyClassList(element, classes, modificationTypes.add);
+      return element;
 
-  var removeClasses = function(element, classes) {
+    };
 
-    var classArray = classes.split(" ");
-    for (var c = 0; c < classArray.length; c++) {
-      element.className = element.className.split(classArray[c]).join("");
-    }
+    this.remove = function(element, classes) {
 
-    element.className = element.className.replace(/^\s+|\s+$/g, "").replace(/\s\s+/g, " ");
-    return element;
+      element = modifyClassList(element, classes, modificationTypes.remove);
+      return element;
+
+    };
+
+    var modificationTypes = {
+      add: "add",
+      remove: "remove"
+    };
+
+    var modifyClassList = function(element, classes, modificationType) {
+
+      var classArray = classes.split(" ");
+
+      for (var c = 0; c < classArray.length; c++) {
+
+        var cls = classArray[c];
+
+        if (modificationType === modificationTypes.add) {
+          element.className += " " + cls;
+        }
+        else if (modificationType === modificationTypes.remove) {
+          element.className = element.className.split(cls).join("");
+        }
+
+      }
+
+      element.className = element.className.trim().replace(/\s\s+/g, " ");
+      return element;
+
+    };
+
   };
 
   var useCustomContent = function(content, customContent) {
@@ -224,6 +247,8 @@
 
     var defaults = new Defaults();
 
+    var modifyClasses = new ClassModifier();
+
     // Set settings to default values if no/invalid settings object has been supplied
     if (typeof settings === "undefined" || settings === null || settings === {} || typeof settings.length !== "undefined")     {
       settings = defaults.settings;
@@ -247,7 +272,7 @@
     // Create the button
     var button = document.createElement("button");
     button.setAttribute("type", "button");
-    button = addClasses(button, buttonClasses.ready);
+    button = modifyClasses.add(button, buttonClasses.ready);
     button.innerHTML = buttonHtml;
 
     // Attach a click handler to the button to copy the text and mark as copied
@@ -271,8 +296,8 @@
 
       // Set the button's classes appropriately (based on whether the copy worked)
       var classesToAdd = success ? buttonClasses.done : buttonClasses.error;
-      button = removeClasses(button, buttonClasses.ready);
-      button = addClasses(button, classesToAdd);
+      button = modifyClasses.remove(button, buttonClasses.ready);
+      button = modifyClasses.add(button, classesToAdd);
 
       // If the focusData setting is off, deselect the data and focus the button after copying
       if (!settings.focusData) {
@@ -288,9 +313,9 @@
 
     // Attach a change listener to the elementToCopy to reset the button content if copied content changes
     elementToCopy.addEventListener("input", function() {
-      button = removeClasses(button, buttonClasses.done);
-      button = removeClasses(button, buttonClasses.error);
-      button = addClasses(button, buttonClasses.ready);
+      button = modifyClasses.remove(button, buttonClasses.done);
+      button = modifyClasses.remove(button, buttonClasses.error);
+      button = modifyClasses.add(button, buttonClasses.ready);
     });
 
     // Return the completed button, event listeners and all
