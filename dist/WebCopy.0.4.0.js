@@ -1,6 +1,6 @@
 /*! WebCopy.0.4.0.js | http://andywhite87.github.io/WebCopy/ | MIT
 *   Andy White | https://twitter.com/etihWydnA
-*   Built on 16-09-2015 */
+*   Built on 18-09-2015 */
 
 ;(function() {
 
@@ -29,6 +29,28 @@
   if (!cutsTheMustard()) {
     return false;
   }
+
+  var Defaults = function() {
+
+    this.settings = {
+      focusData: false,
+      buttonContent: {},
+      buttonClasses: {}
+    };
+
+    this.buttonContent = {
+      ready: "Copy",
+      done: "Copied",
+      error: "Failed"
+    };
+
+    this.buttonClasses = {
+      ready: "webCopy",
+      done: "webCopy webCopy-done",
+      error: "webCopy webCopy-error"
+    };
+
+  };
 
   var addClasses = function(element, classes) {
 
@@ -181,24 +203,6 @@
   */ 
   var WebCopy = function(elementToCopy, settings) {
   
-    var defaultSettings =  {
-      focusData: false,
-      buttonContent: {},
-      buttonClasses: {}
-    };
-
-    var defaultButtonContent = {
-      ready: "Copy",
-      done: "Copied",
-      error: "Failed"
-    };
-
-    var defaultButtonClasses = {
-      ready: "webCopy",
-      done: "webCopy webCopy-done",
-      error: "webCopy webCopy-error"
-    };
-    
     // Return a dummy element if not supported in the current browser
     if (!isSupported()) {
       var notSupportedEl = document.createElement("span");
@@ -216,19 +220,21 @@
       return notValidEl;
     }
 
+    var defaults = new Defaults();
+
     // Set settings to default values if no/invalid settings object has been supplied
     if (typeof settings === "undefined" || settings === null || settings === {} || typeof settings.length !== "undefined")     {
-      settings = defaultSettings;
+      settings = defaults.settings;
     }
 
     // Create an object representing stateful button content. Use any supplied custom content instead of the default
-    var buttonContent = defaultButtonContent;
+    var buttonContent = defaults.buttonContent;
     if (typeof settings.buttonContent !== "undefined" && settings.buttonContent !== null) {
       buttonContent = useCustomContent(buttonContent, settings.buttonContent);
     }
 
     // Create an object representing stateful button classes. Add any supplied custom classes to the defaults
-    var buttonClasses = defaultButtonClasses;
+    var buttonClasses = defaults.buttonClasses;
     if (typeof settings.buttonClasses !== "undefined" && settings.buttonClasses !== null) {
       buttonClasses = useCustomClasses(buttonClasses, settings.buttonClasses);
     }
