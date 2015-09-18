@@ -5,6 +5,7 @@
       element.className += " " + classArray[c];
     }
 
+    element.className = element.className.replace(/^\s+|\s+$/g, "").replace(/\s\s+/g, " ");
     return element;
   };
 
@@ -15,5 +16,6 @@
       element.className = element.className.split(classArray[c]).join("");
     }
 
+    element.className = element.className.replace(/^\s+|\s+$/g, "").replace(/\s\s+/g, " ");
     return element;
   };
