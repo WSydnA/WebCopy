@@ -1,6 +1,6 @@
 /*! WebCopy.0.4.0.js | http://andywhite87.github.io/WebCopy/ | MIT
 *   Andy White | https://twitter.com/etihWydnA
-*   Built on Sat, 19 Sep 2015 13:45:12 GMT */
+*   Built on Sat, 19 Sep 2015 21:39:57 GMT */
 
 ;(function() {
 
@@ -167,6 +167,29 @@
 
   var getContentString = function(content) {
 
+    var errorPlaceholder = "{WebCopy error}";
+
+    if (typeof content === "undefined" || typeof content !== "object" || content === null) {
+      content = {
+        ready: errorPlaceholder,
+        done: errorPlaceholder,
+        error: errorPlaceholder
+      };
+    }
+
+    else {
+      var propsToCheck = ["ready", "done", "error"];
+
+      for (var p = 0; p < propsToCheck.length; p++) {
+
+        var prop = propsToCheck[p];
+        
+        if (typeof content[prop] === "undefined" || content[prop] === null) {
+          content[prop] = errorPlaceholder;
+        } 
+      }
+    } 
+
     var ready = "<span class='webCopy-ready-content'>" + content.ready + "</span>";
     var done = "<span class='webCopy-done-content'>" + content.done + "</span>";
     var error = "<span class='webCopy-error-content'>" + content.error + "</span>";
@@ -223,17 +246,28 @@
 
   var sanitizedElement = function(element) {
 
-    // If a string has been passed in as the element, treat it as a selector
-    if (typeof element === "string") {
-      element = document.querySelector(element);
+    if (typeof element === "undefined" || element === null) {
+      return null;
     }
 
-    // If a JQuery object has been passed in as the element, break it out
-    if (typeof jQuery !== "undefined" && element instanceof jQuery) {
+    // If a string has been passed in as the element, treat it as a selector
+    else if (typeof element === "string") {
+      element = document.querySelector(element);
+      return element;
+    }
+
+    // If a JQuery-like object has been passed in as the element, break it out
+    if (element.length > 0) {
       element = element[0];
+      return element;
+    }
+
+    // If the element really is an HTML element, return it right back
+    else if (element instanceof HTMLElement) {
+      return element;
     }
     
-    return element;
+    return null;
   };
 
   /**
