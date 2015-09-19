@@ -6,9 +6,11 @@ module.exports = function(grunt) {
 
     filename: '<%= pkg.name %>.<%= pkg.version %>',
 
+    timestamp: new Date().toUTCString(),
+
     banner: '/*! <%= filename %>.js | <%= pkg.url %> | <%= pkg.license %>\n' +
             '*   <%= pkg.author %> | <%= pkg.contact %>\n' +
-            '*   Built on <%= grunt.template.today("dd-mm-yyyy") %> */\n',
+            '*   Built on <%= timestamp %> */\n',
 
     s: 'src/',
     t: 'test/',
