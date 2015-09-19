@@ -1,6 +1,6 @@
 /*! WebCopy.0.4.0.js | http://andywhite87.github.io/WebCopy/ | MIT
 *   Andy White | https://twitter.com/etihWydnA
-*   Built on Sat, 19 Sep 2015 13:13:02 GMT */
+*   Built on Sat, 19 Sep 2015 13:19:52 GMT */
 
 ;(function() {
 
