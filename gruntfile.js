@@ -47,8 +47,7 @@ module.exports = function(grunt) {
         templateOptions: {
           coverage: 'coverage/coverage.json',
           report: [
-            { type: 'html', options: { dir: 'coverage/html' }},
-            { type: 'cobertura', options: { dir: 'coverage/cobertura' }},
+            { type: 'lcov', options: { dir: 'coverage' }},
             { type: 'text-summary' }
           ],
           thresholds: {
@@ -74,6 +73,13 @@ module.exports = function(grunt) {
     watch: {
       files: ['<%= jshint.files %>'],
       tasks: ['jshint', 'jasmine']
+    },
+
+    coveralls: {
+      options: {
+        force: true
+      },
+      src: 'coverage/lcov.info'
     }
 
   });
@@ -83,8 +89,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jasmine');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-coveralls');
 
-  grunt.registerTask('test', ['jshint', 'jasmine']);
+  grunt.registerTask('test', ['jshint', 'jasmine', 'coveralls']);
   grunt.registerTask('build', ['jshint', 'jasmine', 'concat', 'uglify']);
 
 };
