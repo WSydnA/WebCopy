@@ -1,6 +1,8 @@
-[![Build Status](https://travis-ci.org/AndyWhite87/WebCopy.svg?branch=master)](https://travis-ci.org/AndyWhite87/WebCopy) 
-
 # WebCopy
+
+[![Build Status](https://travis-ci.org/AndyWhite87/WebCopy.svg?branch=master)](https://travis-ci.org/AndyWhite87/WebCopy)
+[![Coverage Status](https://coveralls.io/repos/AndyWhite87/WebCopy/badge.svg?branch=master&service=github)](https://coveralls.io/github/AndyWhite87/WebCopy?branch=master)
+
 WebCopy makes copying to the clipboard easy. Pure JavaScript, no dependencies, no need for Flash.
 
 ## Usage
