@@ -58,7 +58,7 @@ module.exports = function(grunt) {
 
     watch: {
       files: ['<%= jshint.files %>'],
-      tasks: ['jshint', 'concat', 'uglify', 'jasmine']
+      tasks: ['jshint', 'jasmine']
     }
 
   });
@@ -70,6 +70,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('test', ['jshint', 'jasmine']);
-  grunt.registerTask('default', ['jshint', 'jasmine', 'concat', 'uglify']);
+  grunt.registerTask('build', ['jshint', 'jasmine', 'concat', 'uglify']);
 
 };
