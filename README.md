@@ -1,6 +1,8 @@
 # WebCopy
 
 [![GitHub version](https://badge.fury.io/gh/AndyWhite87%2FWebCopy.svg)](http://badge.fury.io/gh/AndyWhite87%2FWebCopy)
+[![Dependency Status](https://david-dm.org/AndyWhite87/WebCopy.svg)](https://david-dm.org/AndyWhite87/WebCopy)
+[![Dependency Status](https://david-dm.org/AndyWhite87/WebCopy/dev-status.svg)](https://david-dm.org/AndyWhite87/WebCopy#info=devDependencies)
 [![Build Status](https://travis-ci.org/AndyWhite87/WebCopy.svg?branch=master)](https://travis-ci.org/AndyWhite87/WebCopy)
 [![Coverage Status](https://coveralls.io/repos/AndyWhite87/WebCopy/badge.svg?branch=master&service=github)](https://coveralls.io/github/AndyWhite87/WebCopy?branch=master)
 
