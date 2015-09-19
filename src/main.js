@@ -19,6 +19,8 @@
 
     var defaults = new Defaults();
 
+    var modifyProperties = new PropertyModifier();
+
     var modifyClasses = new ClassModifier();
 
     // Set settings to default values if no/invalid settings object has been supplied
@@ -29,13 +31,13 @@
     // Create an object representing stateful button content. Use any supplied custom content instead of the default
     var buttonContent = defaults.buttonContent;
     if (typeof settings.buttonContent !== "undefined" && settings.buttonContent !== null) {
-      buttonContent = useCustomContent(buttonContent, settings.buttonContent);
+      buttonContent = modifyProperties.content(buttonContent, settings.buttonContent);
     }
 
     // Create an object representing stateful button classes. Add any supplied custom classes to the defaults
     var buttonClasses = defaults.buttonClasses;
     if (typeof settings.buttonClasses !== "undefined" && settings.buttonClasses !== null) {
-      buttonClasses = useCustomClasses(buttonClasses, settings.buttonClasses);
+      buttonClasses = modifyProperties.classes(buttonClasses, settings.buttonClasses);
     }
 
     // Convert the buttonContent object into an HTML string for insertion into the button

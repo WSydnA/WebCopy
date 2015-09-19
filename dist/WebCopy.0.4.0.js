@@ -1,6 +1,6 @@
 /*! WebCopy.0.4.0.js | http://andywhite87.github.io/WebCopy/ | MIT
 *   Andy White | https://twitter.com/etihWydnA
-*   Built on 18-09-2015 */
+*   Built on 19-09-2015 */
 
 ;(function() {
 
@@ -97,36 +97,57 @@
 
   };
 
-  var useCustomContent = function(content, customContent) {
+  var PropertyModifier = function() {
 
-    var propsToCheck = ["ready", "done", "error"];
+    this.content = function(content, customContent) {
 
-    for (var p = 0; p < propsToCheck.length; p++) {
+      var propsToModify = ["ready", "done", "error"];
+      content = modifyProperties(content, customContent, propsToModify, modificationTypes.replace);
 
-      var prop = propsToCheck[p];
+      return content;
+    };
 
-      if (customContent[prop] !== null && typeof customContent[prop] === "string" && customContent[prop].length > 0) {
-        content[prop] = customContent[prop];
+    this.classes = function(classes, customClasses) {
+
+      var propsToModify = ["ready", "done", "error"];
+      classes = modifyProperties(classes, customClasses, propsToModify, modificationTypes.add);
+
+      return classes;      
+    };
+
+    var modificationTypes = {
+      add: "add",
+      replace: "replace"
+    };
+
+    var modifyProperties = function(base, additional, propsToModify, modType) {
+
+      if (typeof propsToModify !== "object" || propsToModify.length < 0) {
+        return base;
       }
-    }
 
-    return content;
-  };
+      var modified = base;
 
-  var useCustomClasses = function(classes, customClasses) {
+      for (var p = 0; p < propsToModify.length; p++) {
 
-    var propsToCheck = ["ready", "done", "error"];
+        var prop = propsToModify[p];
 
-    for (var p = 0; p < propsToCheck.length; p++) {
+        if (additional[prop] !== null && typeof additional[prop] === "string" && additional[prop].length > 0) {
 
-      var prop = propsToCheck[p];
+          if (modType === modificationTypes.add) {
+            modified[prop] += " " + additional[prop];
+          }
 
-      if (customClasses[prop] !== null && typeof customClasses[prop] === "string" && customClasses[prop].length > 0) {
-        classes[prop] += " " + customClasses[prop];
+          else if (modType === modificationTypes.replace) {
+            modified[prop] = additional[prop];
+          }
+
+        }
       }
-    }
 
-    return classes;
+      return modified;
+    }; 
+
   };
 
   var elementIsValid = function(element) {
@@ -247,6 +268,8 @@
 
     var defaults = new Defaults();
 
+    var modifyProperties = new PropertyModifier();
+
     var modifyClasses = new ClassModifier();
 
     // Set settings to default values if no/invalid settings object has been supplied
@@ -257,13 +280,13 @@
     // Create an object representing stateful button content. Use any supplied custom content instead of the default
     var buttonContent = defaults.buttonContent;
     if (typeof settings.buttonContent !== "undefined" && settings.buttonContent !== null) {
-      buttonContent = useCustomContent(buttonContent, settings.buttonContent);
+      buttonContent = modifyProperties.content(buttonContent, settings.buttonContent);
     }
 
     // Create an object representing stateful button classes. Add any supplied custom classes to the defaults
     var buttonClasses = defaults.buttonClasses;
     if (typeof settings.buttonClasses !== "undefined" && settings.buttonClasses !== null) {
-      buttonClasses = useCustomClasses(buttonClasses, settings.buttonClasses);
+      buttonClasses = modifyProperties.classes(buttonClasses, settings.buttonClasses);
     }
 
     // Convert the buttonContent object into an HTML string for insertion into the button

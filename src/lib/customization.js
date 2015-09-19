@@ -1,31 +1,52 @@
-  var useCustomContent = function(content, customContent) {
+  var PropertyModifier = function() {
 
-    var propsToCheck = ["ready", "done", "error"];
+    this.content = function(content, customContent) {
 
-    for (var p = 0; p < propsToCheck.length; p++) {
+      var propsToModify = ["ready", "done", "error"];
+      content = modifyProperties(content, customContent, propsToModify, modificationTypes.replace);
 
-      var prop = propsToCheck[p];
+      return content;
+    };
 
-      if (customContent[prop] !== null && typeof customContent[prop] === "string" && customContent[prop].length > 0) {
-        content[prop] = customContent[prop];
+    this.classes = function(classes, customClasses) {
+
+      var propsToModify = ["ready", "done", "error"];
+      classes = modifyProperties(classes, customClasses, propsToModify, modificationTypes.add);
+
+      return classes;      
+    };
+
+    var modificationTypes = {
+      add: "add",
+      replace: "replace"
+    };
+
+    var modifyProperties = function(base, additional, propsToModify, modType) {
+
+      if (typeof propsToModify !== "object" || propsToModify.length < 0) {
+        return base;
       }
-    }
 
-    return content;
-  };
+      var modified = base;
 
-  var useCustomClasses = function(classes, customClasses) {
+      for (var p = 0; p < propsToModify.length; p++) {
 
-    var propsToCheck = ["ready", "done", "error"];
+        var prop = propsToModify[p];
 
-    for (var p = 0; p < propsToCheck.length; p++) {
+        if (additional[prop] !== null && typeof additional[prop] === "string" && additional[prop].length > 0) {
 
-      var prop = propsToCheck[p];
+          if (modType === modificationTypes.add) {
+            modified[prop] += " " + additional[prop];
+          }
 
-      if (customClasses[prop] !== null && typeof customClasses[prop] === "string" && customClasses[prop].length > 0) {
-        classes[prop] += " " + customClasses[prop];
+          else if (modType === modificationTypes.replace) {
+            modified[prop] = additional[prop];
+          }
+
+        }
       }
-    }
 
-    return classes;
+      return modified;
+    }; 
+
   };
