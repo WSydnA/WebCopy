@@ -40,9 +40,22 @@ module.exports = function(grunt) {
     },
 
     jasmine: {
-      src: ['<%=s%>lib/*.js', '<%=s%>main.js'],
-      options: {
-        specs: '<%=t%>/*.js'
+      coverage: {
+        src: ['<%=s%>lib/*.js', '<%=s%>main.js'],
+        options: {
+          specs: '<%=t%>/*.js',
+          template: require('grunt-template-jasmine-istanbul'),
+          templateOptions: {
+            coverage: 'coverage/coverage.json',
+            report: 'coverage/report',
+            thresholds: {
+              lines: 40, // 75
+              statements: 40, // 75
+              branches: 35, // 75
+              functions: 50 // 75
+            }
+          }
+        }
       }
     },
 
