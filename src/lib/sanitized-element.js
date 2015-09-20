@@ -5,19 +5,18 @@
     }
 
     // If a string has been passed in as the element, treat it as a selector
-    else if (typeof element === "string") {
+    if (typeof element === "string") {
       element = document.querySelector(element);
-      return element;
     }
 
-    // If a JQuery-like object has been passed in as the element, break it out
+    // If a node list of jQuery-like object has been passed in as the element,
+    // break it out and use the first element
     if (element.length > 0) {
       element = element[0];
-      return element;
     }
 
-    // If the element really is an HTML element, return it right back
-    else if (element instanceof HTMLElement) {
+    // If the element really is an HTML element, return it
+    if (element instanceof HTMLElement) {
       return element;
     }
     
