@@ -30,7 +30,7 @@ describe("isSupported", function() {
 
   it("returns true if the copy function returns a boolean", function() {
 
-    mockNavigator = { userAgent: "xxMSIE xx" };
+    mockNavigator = { userAgent: "" };
 
     expect(isSupported(mockNavigator, mockExecCommand)).toBe(true);
 
