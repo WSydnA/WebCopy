@@ -2,7 +2,8 @@ describe("cutsTheMustard", function() {
 
   it("returns true in modern browsers", function() {
 
-    var cuts = cutsTheMustard();
+    var testEl = document.createElement("div");
+    var cuts = cutsTheMustard(testEl);
 
     expect(cuts).toBeTruthy();
 
@@ -10,8 +11,9 @@ describe("cutsTheMustard", function() {
 
   it("returns false in old browsers", function() {
 
-    window.addEventListener = undefined;
-    var cuts = cutsTheMustard();
+    var testEl = document.createElement("div");
+    testEl.addEventListener = undefined;
+    var cuts = cutsTheMustard(testEl);
 
     expect(cuts).not.toBeTruthy();
     expect(WebCopy.isSupported).toBe(false);
@@ -20,8 +22,9 @@ describe("cutsTheMustard", function() {
 
   it("creates a constructor that returns invisible elements in old browsers", function() {
 
-    window.addEventListener = undefined;
-    var cuts = cutsTheMustard();
+    var testEl = document.createElement("div");
+    testEl.addEventListener = undefined;
+    var cuts = cutsTheMustard(testEl);
 
     var testButton = new WebCopy();
     var classes = testButton.classList.toString();
