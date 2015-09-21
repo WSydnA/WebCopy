@@ -1,7 +1,7 @@
   var WebCopy = function(elementToCopy, settings) {
   
     // Return a dummy element if not supported in the current browser
-    if (!isSupported()) {
+    if (!isSupported(navigator, document.execCommand)) {
       var notSupportedEl = document.createElement("span");
       notSupportedEl.setAttribute("class", "webCopy-not-supported");
       return notSupportedEl;
