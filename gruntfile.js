@@ -23,7 +23,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: ['<%=s%>lib/cuts-the-mustard.js', '<%=s%>_mustard-cut.js', '<%=s%>lib/defaults.js', '<%=s%>lib/*.js',
-              '<%= s %>_jsdoc.js', '<%=s%>main.js', '<%=s%>_footer.js'],
+              '<%= s %>_jsdoc.js', '<%=s%>main.js', '<%=s%>footer.js'],
         dest: 'dist/<%= filename %>.js'
       }
     },
@@ -40,7 +40,7 @@ module.exports = function(grunt) {
     },
 
     jasmine: {
-      src: ['<%=s%>lib/*.js', '<%=s%>main.js', '<%=s%>_footer.js'],
+      src: ['<%=s%>lib/*.js', '<%=s%>main.js', '<%=s%>footer.js'],
       options: {
         specs: '<%=t%>/*.js',
         template: require('grunt-template-jasmine-istanbul'),
