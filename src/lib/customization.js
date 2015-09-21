@@ -23,30 +23,29 @@
 
     var modifyProperties = function(base, additional, propsToModify, modType) {
 
-      if (typeof propsToModify !== "object" || propsToModify.length < 0) {
-        return base;
-      }
+      if (typeof propsToModify === "object" && propsToModify.length > 0) {
 
-      var modified = base;
+        var modified = base;
 
-      for (var p = 0; p < propsToModify.length; p++) {
+        for (var p = 0; p < propsToModify.length; p++) {
 
-        var prop = propsToModify[p];
+          var prop = propsToModify[p];
 
-        if (additional[prop] !== null && typeof additional[prop] === "string" && additional[prop].length > 0) {
+          if (additional[prop] !== null && typeof additional[prop] === "string" && additional[prop].length > 0) {
 
-          if (modType === modificationTypes.add) {
-            modified[prop] += " " + additional[prop];
+            if (modType === modificationTypes.add) {
+              modified[prop] += " " + additional[prop];
+            }
+
+            else if (modType === modificationTypes.replace) {
+              modified[prop] = additional[prop];
+            }
+
           }
-
-          else if (modType === modificationTypes.replace) {
-            modified[prop] = additional[prop];
-          }
-
         }
-      }
 
-      return modified;
+        return modified;
+      }
     }; 
 
   };
