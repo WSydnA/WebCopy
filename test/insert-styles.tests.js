@@ -43,19 +43,6 @@ describe("insertStyles", function() {
     insertStyles(false);
     var testBtn = document.createElement("button");
     testBtn.classList.add("webCopy");
-    document.body.appendChild(testBtn);
-
-    var btnStyles = window.getComputedStyle(testBtn);
-
-    expect(btnStyles.getPropertyValue("display")).toBe("inline-block");
-
-  });
-
-  it("hides WebCopy buttons when WebCopy is not supported (2)", function() {
-
-    insertStyles(false);
-    var testBtn = document.createElement("button");
-    testBtn.classList.add("webCopy");
     testBtn.classList.add("webCopy-not-supported");
     document.body.appendChild(testBtn);
 
