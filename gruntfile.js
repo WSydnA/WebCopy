@@ -40,7 +40,7 @@ module.exports = function(grunt) {
     },
 
     jasmine: {
-      src: ['<%=s%>lib/*.js', '<%=s%>main.js'],
+      src: ['<%=s%>lib/*.js', '<%=s%>main.js', '<%=s%>_footer.js'],
       options: {
         specs: '<%=t%>/*.js',
         template: require('grunt-template-jasmine-istanbul'),
