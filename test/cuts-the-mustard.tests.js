@@ -29,7 +29,7 @@ describe("cutsTheMustard", function() {
     var mockWindow = {};
     var cuts = cutsTheMustard(testEl, mockWindow);
 
-    var testButton = new WebCopy();
+    var testButton = new mockWindow.WebCopy();
     document.body.appendChild(testButton);
     var classes = testButton.classList.toString();
     var styles = window.getComputedStyle(testButton);
