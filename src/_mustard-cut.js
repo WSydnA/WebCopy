@@ -1,3 +1,3 @@
-  if (!cutsTheMustard(document)) {
+  if (!cutsTheMustard(document, window)) {
     return false;
   }
