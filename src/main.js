@@ -1,13 +1,7 @@
-  var WebCopy = function(elementToCopy, settings, copyFunc) {
-
-    // use document.execCommand unless another function has been passed in
-    // Used for testing only
-    if (typeof copyFunc !== "function") {
-      copyFunc = document.execCommand;
-    }
+  var WebCopy = function(elementToCopy, settings, navigator, document) {
   
     // Return a dummy element if not supported in the current browser
-    if (!isSupported(navigator, copyFunc)) {
+    if (!isSupported(navigator, document)) {
       var notSupportedEl = document.createElement("span");
       notSupportedEl.setAttribute("class", "webCopy-not-supported");
       return notSupportedEl;
@@ -72,7 +66,7 @@
       }
 
       // Copy selected data to the clipboard
-      var success = copyFunc("copy");
+      var success = document.execCommand("copy");
 
       // Set the button's classes appropriately (based on whether the copy worked)
       var classesToAdd = success ? buttonClasses.done : buttonClasses.error;

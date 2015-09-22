@@ -1,15 +1,8 @@
 describe("main", function() {
 
-  var mockExecCommand = function(arg) {
-    if (arg === "copy") {
-      return true;
-    }
-    return false;
-  };
-
   it("returns a hidden span if no element is provided", function() {
 
-    var emptySpan = new WebCopy(null, null, mockExecCommand);
+    var emptySpan = new WebCopy(null, null);
     document.body.appendChild(emptySpan);
 
     var tagName = emptySpan.tagName.toUpperCase();
@@ -25,7 +18,7 @@ describe("main", function() {
     var textArea = document.createElement("textarea");
     document.body.appendChild(textArea);
 
-    var testBtn = new WebCopy(textArea, null, mockExecCommand);
+    var testBtn = new WebCopy(textArea, null);
     document.body.appendChild(testBtn);
 
     var tagName = testBtn.tagName.toUpperCase();

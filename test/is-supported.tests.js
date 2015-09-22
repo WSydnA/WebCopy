@@ -1,30 +1,25 @@
 describe("isSupported", function() {
 
   var mockNavigator;
-  var mockExecCommand = function(arg) {
-    if (arg === "copy") {
-      return true;
-    }
-    return false;
-  };
+  var mockDocument;
 
   it("returns false for Safari and AppleWebKit", function() {
 
     mockNavigator = { userAgent: "xxSafarixx" };
-    expect(isSupported(mockNavigator, mockExecCommand)).toEqual(false);
+    expect(isSupported(mockNavigator, document)).toEqual(false);
 
     mockNavigator = { userAgent: "xxAppleWebKitxx" };
-    expect(isSupported(mockNavigator, mockExecCommand)).toBe(false);
+    expect(isSupported(mockNavigator, document)).toBe(false);
 
   });
 
   it("returns true for IE", function() {
 
     mockNavigator = { userAgent: "xxMSIE xx" };
-    expect(isSupported(mockNavigator, mockExecCommand)).toBe(true);
+    expect(isSupported(mockNavigator, document)).toBe(true);
 
     mockNavigator = { userAgent: "xxTrident/xx" };
-    expect(isSupported(mockNavigator, mockExecCommand)).toBe(true);
+    expect(isSupported(mockNavigator, document)).toBe(true);
 
   });
 
@@ -32,7 +27,7 @@ describe("isSupported", function() {
 
     mockNavigator = { userAgent: "" };
 
-    expect(isSupported(mockNavigator, mockExecCommand)).toBe(true);
+    expect(isSupported(mockNavigator, document)).toBe(true);
 
   });
 
@@ -40,9 +35,9 @@ describe("isSupported", function() {
 
     mockNavigator = { userAgent: "" };
 
-    mockExecCommand = function(arg) {};
+    mockDocument = { execCommand: function() {} };
 
-    expect(isSupported(mockNavigator, mockExecCommand)).toBe(false);
+    expect(isSupported(mockNavigator, mockDocument)).toBe(false);
 
   });
 

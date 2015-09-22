@@ -1,4 +1,4 @@
-  var isSupported = function(navigator, copyFunc) {
+  var isSupported = function(navigator, document) {
 
     // Support isn't reported correctly on Safari, so UA sniffing is used to discount Safari on desktop or iDevices
     // (it's likely to be a while before they support this)
@@ -16,8 +16,13 @@
     }
 
     // Other supported browsers return a boolean in response to the following query
-    if (typeof copyFunc("copy") === "boolean") {
-      return true;
+    try {
+      if (typeof document.execCommand("copy") === "boolean") {
+        return true;
+      }
+    }
+    catch (error) {
+      return false;
     }
 
     // If we've got this far, this browser is not supported
