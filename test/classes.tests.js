@@ -14,13 +14,13 @@ describe("ClassModifier", function() {
       };
 
       modifyClasses.add(el, test.class1);
-      expect(el.classList.toString()).toBe(test.class1);
+      expect(el.className).toBe(test.class1);
 
       modifyClasses.add(el, test.class2);
-      expect(el.classList.toString()).toBe(test.class1 + " " + test.class2);
+      expect(el.className).toBe(test.class1 + " " + test.class2);
 
       modifyClasses.add(el, test.class3);
-      expect(el.classList.toString()).toBe(test.class1 + " " + test.class2 + " " + test.class3);
+      expect(el.className).toBe(test.class1 + " " + test.class2 + " " + test.class3);
 
     });
 
@@ -33,10 +33,10 @@ describe("ClassModifier", function() {
       };
 
       modifyClasses.add(el, test.classGroup1);
-      expect(el.classList.toString()).toBe(test.classGroup1);
+      expect(el.className).toBe(test.classGroup1);
 
       modifyClasses.add(el, test.classGroup2);
-      expect(el.classList.toString()).toBe(test.classGroup1 + " " + test.classGroup2);
+      expect(el.className).toBe(test.classGroup1 + " " + test.classGroup2);
 
     });
 
@@ -60,13 +60,13 @@ describe("ClassModifier", function() {
       el.classList.add(test.class3);
 
       modifyClasses.remove(el, test.class2);
-      expect(el.classList.toString()).toBe(test.class1 + " " + test.class3);
+      expect(el.className).toBe(test.class1 + " " + test.class3);
 
       modifyClasses.remove(el, test.class1);
-      expect(el.classList.toString()).toBe(test.class3);
+      expect(el.className).toBe(test.class3);
 
       modifyClasses.remove(el, test.class3);
-      expect(el.classList.toString()).toBe("");
+      expect(el.className).toBe("");
 
     });
 
@@ -88,10 +88,28 @@ describe("ClassModifier", function() {
       el.classList.add(test.class4);
 
       modifyClasses.remove(el, test.class1 + " " + test.class3);
-      expect(el.classList.toString()).toBe(test.class2 + " " + test.class4);
+      expect(el.className).toBe(test.class2 + " " + test.class4);
 
       modifyClasses.remove(el, test.class2 + " " + test.class4);
-      expect(el.classList.toString()).toBe("");
+      expect(el.className).toBe("");
+
+    });
+
+    it("removes conflicting classes correctly", function() {
+
+      var el = document.createElement("span");
+      var test = {
+        class1: "ready",
+        class2: "readyready"
+      };
+
+      // Multiple calls because of classList bug in PhantomJS
+      // https://github.com/ariya/phantomjs/issues/12782
+      el.classList.add(test.class1);
+      el.classList.add(test.class2);
+
+      modifyClasses.remove(el, test.class1);
+      expect(el.className).toBe("readyready");
 
     });
 
@@ -112,19 +130,19 @@ describe("ClassModifier", function() {
       // Multiple calls because of classList bug in PhantomJS
       // https://github.com/ariya/phantomjs/issues/12782
 
-      expect(el.classList.toString()).toBe("");
+      expect(el.className).toBe("");
 
       modifyClasses.add(el, test.class1 + " " + test.class2);
-      expect(el.classList.toString()).toBe(test.class1 + " " + test.class2);
+      expect(el.className).toBe(test.class1 + " " + test.class2);
 
       modifyClasses.remove(el, test.class2);
-      expect(el.classList.toString()).toBe(test.class1);
+      expect(el.className).toBe(test.class1);
 
       modifyClasses.add(el, test.class3);
-      expect(el.classList.toString()).toBe(test.class1 + " " + test.class3);
+      expect(el.className).toBe(test.class1 + " " + test.class3);
 
       modifyClasses.remove(el, test.class1 + " " + test.class2 + " " + test.class3 + " " + test.class4);
-      expect(el.classList.toString()).toBe("");
+      expect(el.className).toBe("");
 
     });
 

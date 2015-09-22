@@ -31,7 +31,9 @@
           element.className += " " + cls;
         }
         else if (modificationType === modificationTypes.remove) {
-          element.className = element.className.split(cls).join("");
+          element.className = " " + element.className + " ";
+          element.className = element.className.split(" ").join("  ");
+          element.className = element.className.split(" " + cls + " ").join("");
         }
 
       }
