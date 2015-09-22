@@ -31,6 +31,16 @@ describe("isSupported", function() {
 
   });
 
+  it("returns false in if document.execCommand does not exist", function() {
+
+    mockNavigator = { userAgent: "" };
+
+    mockDocument = {};
+
+    expect(isSupported(mockNavigator, mockDocument)).toBe(false);
+
+  });
+
   it("returns false in other cases", function() {
 
     mockNavigator = { userAgent: "" };
