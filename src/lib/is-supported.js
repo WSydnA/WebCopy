@@ -5,8 +5,8 @@
 
     // Support isn't reported correctly on Safari, so UA sniffing is used to discount Safari on desktop or iDevices
     // (it's likely to be a while before they support this)
-    var isSafari = (nav.userAgent.indexOf("Safari") > -1 || nav.userAgent.indexOf("AppleWebKit") > -1) &&
-        nav.userAgent.indexOf("Chrome") < 0;
+    var isSafari = ((nav.userAgent.indexOf("Safari") > -1 || nav.userAgent.indexOf("AppleWebKit") > -1) &&
+        nav.userAgent.indexOf("Chrome") < 0);
     if (isSafari) {
       return false;
     }
