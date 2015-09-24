@@ -1,24 +1,27 @@
-/*! WebCopy.0.4.0.js | http://andywhite87.github.io/WebCopy/ | MIT
+/*! WebCopy.0.4.1.js | http://andywhite87.github.io/WebCopy/ | MIT
 *   Andy White | https://twitter.com/etihWydnA
-*   Built on Sat, 19 Sep 2015 21:39:57 GMT */
+*   Built on Thu, 24 Sep 2015 23:38:27 GMT */
 
 ;(function() {
 
 "use strict";
 
-  var cutsTheMustard = function() {
+  var cutsTheMustard = function(doc, win) {
+
+    doc = doc || document;
+    win = win || window;
 
     var cuts = true;
 
     // In IE8 or lower, or similarly old browsers, bail out and return a dummy span to any WebCopy calls
-    if (typeof window.addEventListener === "undefined") {
-      window.WebCopy = function() {        
+    if (typeof doc.addEventListener === "undefined") {
+      win.WebCopy = function() {        
         var noMustardEl = document.createElement("span");
         noMustardEl.setAttribute("class", "webCopy-not-supported");
         noMustardEl.setAttribute("style", "display:none;");
         return noMustardEl;
       };
-      window.WebCopy.isSupported = false;
+      win.WebCopy.isSupported = false;
       cuts = false;
     }
 
@@ -26,31 +29,9 @@
 
   };
 
-  if (!cutsTheMustard()) {
+  if (!cutsTheMustard(document, window)) {
     return false;
   }
-
-  var Defaults = function() {
-
-    this.settings = {
-      focusData: false,
-      buttonContent: {},
-      buttonClasses: {}
-    };
-
-    this.buttonContent = {
-      ready: "Copy",
-      done: "Copied",
-      error: "Failed"
-    };
-
-    this.buttonClasses = {
-      ready: "webCopy",
-      done: "webCopy webCopy-done",
-      error: "webCopy webCopy-error"
-    };
-
-  };
 
   var ClassModifier = function() {
 
@@ -85,7 +66,9 @@
           element.className += " " + cls;
         }
         else if (modificationType === modificationTypes.remove) {
-          element.className = element.className.split(cls).join("");
+          element.className = " " + element.className + " ";
+          element.className = element.className.split(" ").join("  ");
+          element.className = element.className.split(" " + cls + " ").join("");
         }
 
       }
@@ -122,31 +105,52 @@
 
     var modifyProperties = function(base, additional, propsToModify, modType) {
 
-      if (typeof propsToModify !== "object" || propsToModify.length < 0) {
-        return base;
-      }
+      if (typeof propsToModify === "object" && propsToModify.length > 0) {
 
-      var modified = base;
+        var modified = base;
 
-      for (var p = 0; p < propsToModify.length; p++) {
+        for (var p = 0; p < propsToModify.length; p++) {
 
-        var prop = propsToModify[p];
+          var prop = propsToModify[p];
 
-        if (additional[prop] !== null && typeof additional[prop] === "string" && additional[prop].length > 0) {
+          if (additional[prop] !== null && typeof additional[prop] === "string" && additional[prop].length > 0) {
 
-          if (modType === modificationTypes.add) {
-            modified[prop] += " " + additional[prop];
+            if (modType === modificationTypes.add) {
+              modified[prop] += " " + additional[prop];
+            }
+
+            else if (modType === modificationTypes.replace) {
+              modified[prop] = additional[prop];
+            }
+
           }
-
-          else if (modType === modificationTypes.replace) {
-            modified[prop] = additional[prop];
-          }
-
         }
-      }
 
-      return modified;
+        return modified;
+      }
     }; 
+
+  };
+
+  var Defaults = function() {
+
+    this.settings = {
+      focusData: false,
+      buttonContent: {},
+      buttonClasses: {}
+    };
+
+    this.buttonContent = {
+      ready: "Copy",
+      done: "Copied",
+      error: "Failed"
+    };
+
+    this.buttonClasses = {
+      ready: "webCopy",
+      done: "webCopy webCopy-done",
+      error: "webCopy webCopy-error"
+    };
 
   };
 
@@ -218,26 +222,63 @@
     document.querySelector("head").appendChild(styleTag);
   };
 
-  var isSupported = function() {
+  var isSupported = function(nav, doc) {
+
+    nav = nav || navigator;
+    doc = doc || document;
+
+    var ua = nav.userAgent;
+    var anyVersion = null;
+
+    var browserIsLowerThan = function(browserIdentifier, minVersion) {
+
+      var ident = browserIdentifier + "/";
+      var version;
+
+      if (ua.indexOf(ident) > -1) {
+        if (minVersion === anyVersion) {
+          return true;
+        }
+        else {
+          version = parseInt(ua.split(ident)[1].split(".")[0]);
+          return version < minVersion;
+        }
+      }
+
+      return false;
+
+    };
 
     // Support isn't reported correctly on Safari, so UA sniffing is used to discount Safari on desktop or iDevices
     // (it's likely to be a while before they support this)
-    var isSafari = (navigator.userAgent.indexOf("Safari") > -1 || navigator.userAgent.indexOf("AppleWebKit") > -1) &&
-        navigator.userAgent.indexOf("Chrome") < 0;
+    var isSafari = (browserIsLowerThan("Safari", anyVersion) ||
+                    browserIsLowerThan("AppleWebKit", anyVersion)) &&
+                   !browserIsLowerThan("Chrome", anyVersion);
     if (isSafari) {
+      return false;
+    }
+
+    // Discount Chrome 41 and lower. document.execCommand is partially supported in
+    // earlier versions, but not for our purposes
+    if (browserIsLowerThan("Chrome", 42)) {
       return false;
     }
 
     // Checking for support in advance triggers a permissions pop up in supported versions of IE
     // We want to avoid this at least until the button is clicked, so bypass this check in IE > 8
-    var isIE = navigator.userAgent.indexOf("MSIE ") > -1 || navigator.userAgent.indexOf("Trident/") > -1;
+    var isIE = ua.indexOf("MSIE ") > -1 || browserIsLowerThan("Trident", anyVersion);
     if (isIE) {
       return true;
     }
 
     // Other supported browsers return a boolean in response to the following query
-    if (typeof document.execCommand("copy") === "boolean") {
-      return true;
+    try {
+      if (typeof doc.execCommand("copy") === "boolean") {
+        return true;
+      }
+    }
+    catch (error) {
+      return false;
     }
 
     // If we've got this far, this browser is not supported
@@ -251,19 +292,18 @@
     }
 
     // If a string has been passed in as the element, treat it as a selector
-    else if (typeof element === "string") {
+    if (typeof element === "string") {
       element = document.querySelector(element);
-      return element;
     }
 
-    // If a JQuery-like object has been passed in as the element, break it out
+    // If a node list of jQuery-like object has been passed in as the element,
+    // break it out and use the first element
     if (element.length > 0) {
       element = element[0];
-      return element;
     }
 
-    // If the element really is an HTML element, return it right back
-    else if (element instanceof HTMLElement) {
+    // If the element really is an HTML element, return it
+    if (element instanceof HTMLElement) {
       return element;
     }
     
@@ -281,10 +321,13 @@
   *
   * @returns {element} the copy button, along with event handlers, for insertion into the DOM.
   */ 
-  var WebCopy = function(elementToCopy, settings) {
+  var WebCopy = function(elementToCopy, settings, nav, doc) {
+
+    nav = nav || window.navigator;
+    doc = doc || document;
   
     // Return a dummy element if not supported in the current browser
-    if (!isSupported()) {
+    if (!isSupported(nav, doc)) {
       var notSupportedEl = document.createElement("span");
       notSupportedEl.setAttribute("class", "webCopy-not-supported");
       return notSupportedEl;
@@ -379,12 +422,13 @@
     return button;
   };
 
+ 
+  // Attach a boolean to WebCopy to indicatewhether it is supported in this browser 
+  WebCopy.isSupported = isSupported(navigator, document);
+  
   // Insert WebCopy styles at the end of the document head.
   // Full styles if WebCopy is supported in this browser, else styles to hide the dummy span
-  insertStyles(isSupported());
-  
-  // Attach a boolean to WebCopy to indicatewhether it is supported in this browser 
-  WebCopy.isSupported = isSupported();
+  insertStyles(WebCopy.isSupported);
 
   // Attach the WebCopy constructor to the window object to allow it to be called
   window.WebCopy = WebCopy;

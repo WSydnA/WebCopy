@@ -34,6 +34,8 @@
       return false;
     }
 
+    // Discount Chrome 41 and lower. document.execCommand is partially supported in
+    // earlier versions, but not for our purposes
     if (browserIsLowerThan("Chrome", 42)) {
       return false;
     }
