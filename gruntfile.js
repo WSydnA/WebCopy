@@ -48,6 +48,7 @@ module.exports = function(grunt) {
           coverage: 'coverage/coverage.json',
           report: [
             { type: 'lcov', options: { dir: 'coverage' }},
+            { type: 'html', options: { dir: 'coverage/html' }},
             { type: 'text-summary' }
           ],
           thresholds: {
